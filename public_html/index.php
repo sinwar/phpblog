@@ -89,7 +89,7 @@ if($blogs == false)
                 </div>
         <div class="card-content">
         <span class="card-title">'.$viewer->limit_words($blogs[$i][3],$word_limit).'</div>';
-        echo '<div class = "text-center card-action" ><a href ="view-blog.php?blog_id='.$blogs[$i][0].'"  style="color:green; font-weight:bold;" >'.$blogs[$i][2].'</a>
+        echo '<div class = "text-center card-action" ><a href ="view-blog.php?blog_id='.$blogs[$i][0].'"  style="color:green; font-weight:bold;" >'.$blogs[$i][8].'\'s  '.$blogs[$i][2].'</a>
           </div>';
           echo '<div class="card-reveal"><span class="card-title">'.$blogs[$i][2].'<i class="material-icons right">close</i><h6 class="flow-text grey-text">'.$blogs[$i][4].','.$blogs[$i][6].'<br/></h6> </span><h4 class="flow-text">'.$blogs[$i][3].'</div>
           </div></div>';

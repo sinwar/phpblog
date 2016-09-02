@@ -110,12 +110,13 @@ session_start();
 <?php
 if(isset($_POST['submit']))
 {
-	 $title = htmlspecialchars($_POST['title'],ENT_QUOTES);
+	  $title = htmlspecialchars($_POST['title'],ENT_QUOTES);
   	$category = htmlspecialchars($_POST['category'],ENT_QUOTES);
   	$desc = htmlspecialchars($_POST['desc'],ENT_QUOTES);
-	$username=$_SESSION['username'];
+	  $username=$_SESSION['username'];
 		$target_dir = "images/";
-		$target_file = $target_dir . basename($_FILES["blog_image"]["name"]);
+		$target_file = $target_dir.basename($_FILES["blog_image"]["name"]);
+    $target_filep = $target_dir.$_FILES["blog_image"]["name"];
 		$uploadOk = 1;
 		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 		$check = getimagesize($_FILES["blog_image"]["tmp_name"]);
@@ -138,26 +139,31 @@ if(isset($_POST['submit']))
 	    $uploadOk = 0;
 	}
 	// Check if $uploadOk is set to 0 by an error
+  print_r($_FILES);
+  echo $target_filep;
 	if ($uploadOk == 0) {
 	    echo "Sorry, your file was not uploaded.";
 	// if everything is ok, try to upload file
 	} else {
-	    if (move_uploaded_file($_FILES["blog_image"]["tmp_name"], $target_file)) {
+	    if (move_uploaded_file($_FILES["blog_image"]["tmp_name"], $target_filep)) {
+
 	        echo "The file ". basename( $_FILES["blog_image"]["name"]). " has been uploaded.";
-	    } else {
+
+          $publish = $blogger->publish($username,$title,$category,$desc,$target_file);
+          if($publish == true)
+          {
+            echo "<script type='text/javascript'>alert('Published Succesfully');window.location.href = 'userhome.php';</script>";
+          }
+          if($publish == false){
+            echo "<script type='text/javascript'>alert('There is something wrong, your blog is saved as draft');window.location.href = 'userhome.php';</script>";
+          }
+          if($publish == "No blogger id found"){
+            echo "No id found";
+          }
+	    } 
+      else {
 	        echo "Sorry, there was an error uploading your file.";
 	    }
-	}
-	$publish = $blogger->publish($username,$title,$category,$desc,$target_file);
-	if($publish == true)
-	{
-		echo "<script type='text/javascript'>alert('Published Succesfully');window.location.href = 'userhome.php';</script>";
-	}
-	if($publish == false){
-		echo "<script type='text/javascript'>alert('There is something wrong, your blog is saved as draft');window.location.href = 'userhome.php';</script>";
-	}
-	if($publish == "No blogger id found"){
-		echo "No id found";
 	}
 }
 ?>
